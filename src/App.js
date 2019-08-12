@@ -34,6 +34,7 @@ function App() {
                 setOuterTimeMinutes(outerTimeMinutes - 1);
               } else{
                 setOuterTimeMinutes(outerTimeMinutes + 1);
+                setInnerTimeMinutes(innerTimeMinutes + 5);
                 if (quarter !== 4){
                   setQuarter(quarter + 1);
                 } else{
