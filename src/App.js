@@ -1,13 +1,50 @@
 //TODO: STEP 1 - Import the useState hook.
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./App.css";
 import BottomRow from "./BottomRow";
+
 
 function App() {
   //TODO: STEP 2 - Establish your applictaion's state with some useState hooks.  You'll need one for the home score and another for the away score.
 
   const [homeScore, setHomeScore] = useState(0);
   const [awayScore, setAwayScore] = useState(0);
+  const [outerTimeMinutes, setOuterTimeMinutes] = useState(1);
+  const [innerTimeMinutes, setInnerTimeMinutes] = useState(5);
+  const [outerTimeSeconds, setOuterTimeSeconds] = useState(0);
+  const [innerTimeSeconds, setInnerTimeSeconds] = useState(0);
+  const [quarter, setQuarter] = useState(1);
+
+  useEffect(() => {
+    let interval = setTimeout( () => {
+
+        if (outerTimeSeconds !== 0){
+          setOuterTimeSeconds(outerTimeSeconds - 1);
+        } else{
+          setOuterTimeSeconds(outerTimeSeconds + 9);
+          if (innerTimeSeconds !== 0){
+            setInnerTimeSeconds(innerTimeSeconds - 1);
+          } else{
+            setInnerTimeSeconds(innerTimeSeconds + 5);
+            if (innerTimeMinutes !== 0){
+              setInnerTimeMinutes(innerTimeMinutes - 1);
+            } else{
+              setInnerTimeMinutes(innerTimeMinutes + 9);
+              if (outerTimeMinutes !== 0){
+                setOuterTimeMinutes(outerTimeMinutes - 1);
+              } else{
+                setOuterTimeMinutes(outerTimeMinutes + 1);
+                if (quarter !== 4){
+                  setQuarter(quarter + 1);
+                } else{
+                  setQuarter(quarter - 3);
+                }
+              }
+            }
+          }
+        }
+    }, 1000 );
+  });
 
   return (
     <div className="container">
@@ -20,13 +57,13 @@ function App() {
 
             <div className="home__score">{homeScore}</div>
           </div>
-          <div className="timer">00:03</div>
+          <div className="timer">{outerTimeMinutes}{innerTimeMinutes}:{innerTimeSeconds}{outerTimeSeconds}</div>
           <div className="away">
             <h2 className="away__name">Bears</h2>
             <div className="away__score">{awayScore}</div>
           </div>
         </div>
-        <BottomRow />
+        <BottomRow quarterNum = {quarter} />
       </section>
       <section className="buttons">
         <div className="homeButtons">
